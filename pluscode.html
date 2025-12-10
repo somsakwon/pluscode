@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<body>
+<input id="plus" placeholder="Enter PlusCode">
+<button onclick="convert()">Convert</button>
+
+<script src="https://cdn.jsdelivr.net/npm/openlocationcode@1.0.3/openlocationcode.js"></script>
+
+<script>
+function convert() {
+    var code = document.getElementById("plus").value;
+
+    try {
+        var decoded = OpenLocationCode.decode(code);
+
+        // ส่งกลับไปยัง Power Apps
+        window.parent.postMessage(
+            JSON.stringify({
+                lat: decoded.latitudeCenter,
+                lng: decoded.longitudeCenter
+            }),
+            "*"
+        );
+    } catch(e) {
+        window.parent.postMessage(
+            JSON.stringify({ error: "Invalid Plus Code" }),
+            "*"
+        );
+    }
+}
+</script>
+</body>
+</html>
